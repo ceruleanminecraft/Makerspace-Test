@@ -1,0 +1,181 @@
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@100');
+
+        body {
+            background: linear-gradient(0deg, #35009a 0%, #503eda 80%);
+            overflow: hidden;
+            font-family: 'DM Sans';
+            color: white;
+        }
+
+        .topBar {
+            background: #492dd7;
+            height: 14vh;
+            margin: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            color: white;
+            box-shadow: 0px -6px 0px 0px rgba(0, 0, 0, 0.2) inset, 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: .45s ease;
+            z-index: 100;
+            flex-direction: column;
+        }
+
+        .main {
+            margin-top: 14vh;
+            height: 66vh;
+            display: flex;
+            flex-direction: row;
+            padding: 10vh 20vh;
+            gap: 10vw;
+        }
+
+        .topWelcome {
+            text-shadow: 0px 4px 0px rgba(0, 0, 0, 0.4);
+            font-size: 4vh;
+            font-family: 'Archivo Black';
+            margin: 10px 0 0 0;
+        }
+
+        .topDesc {
+            text-shadow: 0px 4px 0px rgba(0, 0, 0, 0.4);
+            font-size: 2vh;
+            font-family: 'Archivo Black';
+        }
+
+        .card {
+            height: 100%;
+        }
+
+        .customizer {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 3vh;
+        }
+
+        .option {
+            width: 80%;
+            height: 7vh;
+            display: flex;
+            padding: 10px 15px;
+            background: #230075;
+            box-shadow: 0px 7px 0px 0px #190250, 0px 12px 0px 0px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            gap: 20px;
+        }
+
+        .optionText {
+            width: calc(50% - 10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.75em;
+        }
+
+        .optionValue {
+            width: calc(50% - 10px);
+            height: 80%;
+            display: flex;
+            align-items: center;
+            border-radius: 5px;
+            background-color: #35009a;
+            border: none;
+            color: white;
+            font-size: 1.25em;
+            text-align: center;
+            font-family: 'DM Sans';
+        }
+
+        .optionValue:focus {
+            outline: none;
+        }
+    </style>
+
+    <title>Catchet Makerspace</title>
+</head>
+
+<body>
+    <div class="topBar">
+        <p class="topWelcome">Catchet Makerspace</p>
+        <p class="topDesc">A simple tool allowing you to make Catchet cards.</p>
+    </div>
+    <div class="main">
+        <img class="card" src="https://catchet.piootr.com/images/cardfront.png">
+      
+        <div class="customizer">
+            <div class="option">
+                <div class="optionText">Background</div>
+                <select class="optionValue">
+                    <option value="blue">Blue</option>
+                    <option value="yellow">Yellow</option>
+                </select>
+            </div>
+
+            <div class="option">
+                <div class="optionText">Catchlet Name</div>
+                <input class="optionValue" value="Catchet" id="name">
+            </div>
+
+            <div class="option">
+                <div class="optionText">Catchlet URL</div>
+                <input class="optionValue" value="https://catchet.piootr.com/images/catchlets/debug.png" id="catchletImg">
+            </div>
+
+            <div class="option">
+                <div class="optionText">Element URL</div>
+                <input class="optionValue" value="https://catchet.piootr.com/images/icons/neutralIcon.png" id="element">
+            </div>
+
+            <div class="option">
+                <div class="optionText">Level</div>
+                <input class="optionValue" value="1" id="level">
+            </div>
+
+            <div class="option">
+                <div class="optionText">Damage</div>
+                <input class="optionValue" value="1" id="dmg">
+            </div>
+
+            <div class="option">
+                <div class="optionText">Health</div>
+                <input class="optionValue" value="1" id="hp">
+            </div>
+
+            <div class="option">
+                <div class="optionText">Rarity</div>
+                <input class="optionValue" value="Uncommon" id="rarity">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let es = async (ns) => fetch(ns.replace(/[\n ]/g, '').replaceAll('__S', ' ')).then(r => r.json()).then((r) => document.querySelector('.card').src = r.card);
+
+        const update = () => {
+            es(`
+                /make
+                    ?background=${document.querySelector('select').options[document.querySelector('select').selectedIndex].value}
+                    &name=${document.querySelector('#name').value.replaceAll(' ', '__S')}
+                    &catchletImg=${document.querySelector('#catchletImg').value}
+                    &level=${document.querySelector('#level').value}
+                    &hp=${document.querySelector('#hp').value}
+                    &dmg=${document.querySelector('#dmg').value}
+                    &element=${document.querySelector('#element').value}
+                    &rarity=${document.querySelector('#rarity').value.replaceAll(' ', '__S')}
+            `);
+        };
+
+        update();
+
+        document.querySelectorAll('.optionValue').forEach(element => element.onchange = () => update());
+    </script>
+</body>
