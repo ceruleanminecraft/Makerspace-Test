@@ -1,0 +1,11 @@
+{
+    "name": "catchet-makerspace",
+    "description": "A simple tool allowing you to make Catchet cards.",
+    "version": "1.0.0",
+    "main": "api.js",
+    "author": "xthonk",
+    "dependencies": {
+        "express": "^4.18.2",
+        "@napi-rs/canvas": "^0.1.43"
+    }
+}
